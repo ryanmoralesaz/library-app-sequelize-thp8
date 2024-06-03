@@ -19,3 +19,9 @@
 - ran this command to mitigate the LF to CRLF warnings in git `git config --global core.autocrlf true`
 - ran `add` and `commit` and `push`
 - moving on to Insturction step 2 basic setup
+
+## June 2, 2024
+    - I set up the book model with `npx sequelize model:create --name Book --attributes title:string,author:string,genre:string,year:integer`
+    - I synced and connected the database with an IIFE
+    - I set up error handling for 404 and 500 routes
+    - Moving on to step 6
