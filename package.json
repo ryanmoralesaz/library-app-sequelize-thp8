@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon --exec 'node ./app/bin/www' --ignore 'public/*.*' & browser-sync start --proxy 'localhost:3000' --files 'public/**/*, app/data/*.json, ./app/bin/www' --no-open",
+    "dev": "nodemon ./app/bin/www"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -17,6 +18,8 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "browser-sync": "^3.0.2",
+    "nodemon": "^3.1.3",
     "sequelize-cli": "^6.6.2"
   }
 }

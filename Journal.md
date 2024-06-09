@@ -18,7 +18,7 @@
 - included a `.gitignore` file generated with AI to avoud pushing unnecessary modules and dependencies
 - ran this command to mitigate the LF to CRLF warnings in git `git config --global core.autocrlf true`
 - ran `add` and `commit` and `push`
-- moving on to Insturction step 2 basic setup
+- moving on to Instruction step 2 basic setup
 
 ## June 2, 2024
     - I set up the book model with `npx sequelize model:create --name Book --attributes title:string,author:string,genre:string,year:integer`

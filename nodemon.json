@@ -1,0 +1,6 @@
+{
+  "watch": ["app/**/*.js", "app/bin/www", "app/models/**/*.js", "app/routes/**/*.js", "app/data/*.json"],
+  "ignore": ["public/*"],
+  "ext": "js,json",
+  "exec": "node ./app/bin/www"
+}

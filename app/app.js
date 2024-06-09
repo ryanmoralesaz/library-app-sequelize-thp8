@@ -1,25 +1,25 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const createError = require('http-errors');
+const logger = require('morgan'); // uses Morgan to log requests
 
-var { sequelize } = require('./models'); // Import Sequelize instance
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var booksRouter = require('./routes/books');
+const { sequelize } = require('./models'); // Import Sequelize instance
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const booksRouter = require('./routes/books');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev')); // uses Morgan to log requests
+app.use(express.json()); // parses incoming JSON requests
+app.use(express.urlencoded({ extended: false })); // parses URL-encoded data
+app.use(cookieParser());// parses cookies
+app.use(express.static(path.join(__dirname, 'public'))); // serves static files from 'public' directory
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -29,6 +29,7 @@ app.use('/books', booksRouter);
 app.use(function (req, res, next) {
   const error = new Error('Page Not Found');
   error.status = 404;
+
   next(error);
 });
 
@@ -48,10 +49,11 @@ app.use(function (err, req, res, next) {
 });
 
 (async () => {
+  const db = require('./models');
   try {
+    await sequelize.sync({ force: false }); // Set to true if you want to drop and recreate tables
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
-    await sequelize.sync({ force: false }); // Set to true if you want to drop and recreate tables
     console.log('Database synced successfully.');
 
     // Start the server after the database is synced

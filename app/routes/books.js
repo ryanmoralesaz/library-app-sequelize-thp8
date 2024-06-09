@@ -1,116 +1,84 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const { Book } = require('../models');
 
-const books = [
-  {
-    title: 'The Hunger Games',
-    author: 'Suzanne Collins',
-    genre: 'Fantasy',
-    year: 2008,
-    url: '/books/1'
-  },
-  {
-    title: 'Catching Fire',
-    author: 'Suzanne Collins',
-    genre: 'Fantasy',
-    year: 2009,
-    url: '/books/2'
-  },
-  {
-    title: 'Mockingjay',
-    author: 'Suzanne Collins',
-    genre: 'Fantasy',
-    year: 2010,
-    url: '/books/3'
-  },
-  {
-    title: 'The Ballad of Songbirds and Snakes',
-    author: 'Suzanne Collins',
-    genre: 'Fantasy',
-    year: 2020,
-    url: '/books/4'
-  },
-  {
-    title: 'The Memory Police',
-    author: 'Yoko Ogawa',
-    genre: 'Science Fiction',
-    year: 1994,
-    url: '/books/5'
-  },
-  {
-    title: 'Nickel Boys',
-    author: 'Colson Whitehead',
-    genre: 'Historical Fiction',
-    year: 2019,
-    url: '/books/6'
-  },
-  {
-    title: 'The Book of Unknown Americans',
-    author: 'Cristina Henriquez',
-    genre: 'Fiction',
-    year: 2014,
-    url: '/books/7'
-  },
-  {
-    title: 'A Brief History of Time',
-    author: 'Stephen Hawking',
-    genre: 'Non Fiction',
-    year: 1988,
-    url: '/books/8'
-  },
-  {
-    title: 'Armada',
-    author: 'Ernest Cline',
-    genre: 'Science Fiction',
-    year: 2015,
-    url: '/books/9'
-  },
-  {
-    title: 'Emma',
-    author: 'Jane Austen',
-    genre: 'Classic',
-    year: 1815,
-    url: '/books/10'
-  },
-  {
-    title: 'Frankenstein',
-    author: 'Mary Shelley',
-    genre: 'Horror',
-    year: 1818,
-    url: '/books/11'
-  },
-  {
-    title: 'Pride and Prejudice',
-    author: 'Jane Austen',
-    genre: 'Classic',
-    year: 1813,
-    url: '/books/12'
-  },
-  {
-    title: 'Ready Player One',
-    author: 'Ernest Cline',
-    genre: 'Science Fiction',
-    year: 2011,
-    url: '/books/13'
-  },
-  {
-    title: 'The Martian',
-    author: 'Andy Weir',
-    genre: 'Science Fiction',
-    year: 2014,
-    url: '/books/14'
-  },
-  {
-    title: 'The Universe in a Nutshell',
-    author: 'Stephen Hawking',
-    genre: 'Non Fiction',
-    year: 2001,
-    url: '/books/15'
+// get books shows the full list of books
+router.get('/', async function (req, res, next) {
+  try {
+    const books = await Book.findAll();
+    res.render('index', { title: 'Books', books });
+  } catch (err) {
+    next(err);
   }
-];
-
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Books', books: books });
 });
 
+// GET /books/new - shows the create new book form
+router.get('/new', function (req, res, next) {
+  res.render('new-book', { title: 'New Book' });
+});
+
+// POST /books/new - posts a new book to the database
+router.post('/new', async function (req, res, next) {
+  try {
+    const book = await Book.create(req.body);
+    res.redirect('/books');
+  } catch (err) {
+    if (err.name === 'SequelizeValidationError') {
+      const book = await Book.build(req.body);
+      res.render('new-book', { title: 'New Book', book, errors: err.errors });
+    } else {
+      next(err);
+    }
+  }
+});
+
+// GET /books/:id - shows book detail form
+router.get('/:id', async function (req, res, next) {
+  try {
+    const book = await Book.findByPk(req.params.id);
+    if (book) {
+      res.render('update-book', { title: 'Update Book', book });
+    } else {
+    next(createError(404, 'Book Not Found'));
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /books/:id - updates book info in the database
+router.post('/:id', async function (req, res, next) {
+  try {
+    const book = await Book.findByPk(req.params.id);
+    if (book) {
+      await book.update(req.body);
+      res.redirect('/books');
+    } else {
+      next(createError(404, 'Book Not Found'));
+    }
+  } catch (err) {
+    if (err.name === 'SequelizeValidationError') {
+      const book = await Book.build(req.body);
+      book.id = req.params.id;
+      res.render('update-book', { title: 'Update Book', book, errors: err.errors });
+    } else {
+      next(err);
+    }
+  }
+});
+
+// POST /books/:id/delete - deletes a book
+router.post('/:id/delete', async function (req, res, next) {
+  try {
+    const book = await Book.findByPk(req.params.id);
+    if (book) {
+      await book.destroy();
+      res.redirect('/books');
+    } else {
+      next(createError(404, 'Book Not Found'));
+    }
+  } catch (err) {
+    next(err);
+  }
+});
 module.exports = router;
