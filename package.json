@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --exec 'node ./app/bin/www' --ignore 'public/*.*' & browser-sync start --proxy 'localhost:3000' --files 'public/**/*, app/data/*.json, ./app/bin/www' --no-open",
-    "dev": "nodemon ./app/bin/www"
+    "start": "nodemon --config nodemon.json & browser-sync start --proxy 'localhost:3000' --port 4000 --files 'public/**/*, app/data/*.json, app/bin/www' --no-open",
+    "dev": "nodemon --config nodemon.json"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -15,6 +15,7 @@
     "morgan": "~1.9.1",
     "pug": "^3.0.3",
     "sequelize": "^6.37.3",
+    "serve-favicon": "^2.5.0",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {

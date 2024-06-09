@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const createError = require('http-errors');
 const { Book } = require('../models');
 
 // get books shows the full list of books
@@ -39,7 +40,7 @@ router.get('/:id', async function (req, res, next) {
     if (book) {
       res.render('update-book', { title: 'Update Book', book });
     } else {
-    next(createError(404, 'Book Not Found'));
+      next(createError(404, 'Book Not Found'));
     }
   } catch (err) {
     next(err);
@@ -60,7 +61,11 @@ router.post('/:id', async function (req, res, next) {
     if (err.name === 'SequelizeValidationError') {
       const book = await Book.build(req.body);
       book.id = req.params.id;
-      res.render('update-book', { title: 'Update Book', book, errors: err.errors });
+      res.render('update-book', {
+        title: 'Update Book',
+        book,
+        errors: err.errors
+      });
     } else {
       next(err);
     }
