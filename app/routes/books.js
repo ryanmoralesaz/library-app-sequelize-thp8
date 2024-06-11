@@ -3,13 +3,36 @@ const router = express.Router();
 // utilize http-errors module
 const createError = require('http-errors');
 const { Book } = require('../models');
-
+const { Op } = require('sequelize');
 // GET / redirects to /books shows the full list of books
 router.get('/', async function (req, res, next) {
   try {
-    const books = await Book.findAll();
-    // render all of the books from the database Book model to the pug index template
-    res.render('index', { title: 'Books', books });
+    // get the search term from the query parameters, default to an empty string
+    const search = req.query.search || '';
+    // get the current page, default to one
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = 10; // Set the number of books per page for pagination functionality
+    // set how many books to skip based on the current page
+    const offset = (page - 1) * limit;
+    // define the search conditions using Sequelize Operators
+    const where = {
+      [Op.or]: [
+        { title: { [Op.like]: `%${search}%` } },
+        { author: { [Op.like]: `%${search}%` } },
+        { genre: { [Op.like]: `%${search}%` } },
+        { year: { [Op.like]: `%${search}%` } }
+      ]
+    };
+    // find and count all books that match the search condition
+    const { rows: books, count } = await Book.findAndCountAll({
+      where,
+      limit,
+      offset
+    });
+    // calculate the total number of pages
+    const pages = Math.ceil(count / limit);
+    // render the index with the search and page parameters
+    res.render('index', { title: 'Books', books, search, page, pages });
   } catch (err) {
     next(err);
   }

@@ -2,18 +2,24 @@
 
 const fs = require('fs');
 const path = require('path');
-
+const { sequelize, Book } = require('../models'); // Import Sequelize instance
 module.exports = {
     // up function inserts data into the database
     up: async (queryInterface, Sequelize) => {
+        // check if the Books table exists with records
+        const bookCount = await Book.count();
+        if (bookCount > 0) {
+            console.log('Books table already populated, skipping seed.');
+            return;
+        }
         // get the seed books from the json file
         const booksPath = path.join(__dirname, './books.json');
         // read from the json file
         const booksData = fs.readFileSync(booksPath, 'utf-8');
         // parse the JSON into a books object
         const books = JSON.parse(booksData);
-       // insert all of the book objects into the Books table using the map method
-       // pass in all of the required validation parameters using the book object keys 
+        // insert all of the book objects into the Books table using the map method
+        // pass in all of the required validation parameters using the book object keys 
         await queryInterface.bulkInsert('Books', books.map(book => ({
             title: book.title,
             author: book.author,

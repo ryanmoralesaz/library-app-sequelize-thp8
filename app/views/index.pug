@@ -1,22 +1,47 @@
-extends layout 
+extends layout
 
 block content
-    h1 Books
+  h1 Books
+  p
+    a.button(href='books/new') Create New Book 
+  form(action="/books" method="get")
     p
-        a.button(href='books/new') Create New Book 
-    table 
-        thead 
-            tr
-                th Title 
-                th Author
-                th Genre
-                th Year
-        tbody 
-            // render the book view for each book passed to the template from the database
-            each book, i in books
-                tr 
-                    td 
-                        a(href=`/books/${book.id}`) #{book.title}
-                    td= book.author
-                    td= book.genre
-                    td= book.year
+      label(for="search") Search
+      // input field for the search bar, the value is set to the current input term value
+      input(name="search" type="text" id="search" value=search)
+      button(type="submit") Search
+  // if search is successful show a button to go back to all books
+  if search 
+    a.button(href='/books') Show All Books
+  table 
+    thead 
+      tr
+        th Title 
+        th Author
+        th Genre
+        th Year
+    tbody 
+      each book in books
+        tr 
+          td 
+            a(href=`/books/${book.id}`) #{book.title}
+          td= book.author
+          td= book.genre
+          td= book.year
+  // show pagination controls if there is more than one page of books
+  if pages > 1
+    nav
+      ul.pagination
+        // show the previous button if on the second page or higher
+        if page > 1
+          li
+            // decrement current page by one
+            a(href=`/books?page=${page-1}&search=${search}`) Previous
+        // for each page show a button with the page number
+        each i in [...Array(pages).keys()]
+          li
+            a(href=`/books?page=${i+1}&search=${search}`) #{i+1}
+        // show the next button if not on the last page
+        if page < pages
+          li
+            a(href=`/books?page=${page+1}&search=${search}`) Next
