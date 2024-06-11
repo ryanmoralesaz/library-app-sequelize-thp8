@@ -1,13 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
+const { Op } = require('sequelize');
 const { Book } = require('../models');
 
 // get books shows the full list of books
 router.get('/', async function (req, res, next) {
   try {
-    const books = await Book.findAll();
-    res.render('index', { title: 'Books', books });
+    const search = req.query.search || '';
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = 10; // Number of books per page
+    const offset = (page - 1) * limit;
+
+    const where = {
+      [Op.or]: [
+        { title: { [Op.like]: `%${search}%` } },
+        { author: { [Op.like]: `%${search}%` } },
+        { genre: { [Op.like]: `%${search}%` } },
+        { year: { [Op.like]: `%${search}%` } }
+      ]
+    };
+
+    const { rows: books, count } = await Book.findAndCountAll({
+      where,
+      limit,
+      offset
+    });
+
+    const pages = Math.ceil(count / limit);
+    res.render('index', { title: 'Books', books, search, page, pages });
   } catch (err) {
     next(err);
   }
