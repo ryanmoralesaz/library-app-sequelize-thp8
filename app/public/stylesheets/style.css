@@ -111,16 +111,3 @@ ul.pagination {
 ul.pagination li {
   margin-right: 1rem;
 }
-
-/* Input reset for year number input  */
-/* input[type="text"],
-input[type="number"],
-input[type="email"],
-input[type="password"] {
-  padding: 8px; /* Adjust as needed */
-  margin: 0;
-  border: 1px solid #ccc; /* Adjust as needed */
-  font-size: 16px; /* Adjust as needed */
-  line-height: 1.5; /* Adjust as needed */
-  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
-} */
