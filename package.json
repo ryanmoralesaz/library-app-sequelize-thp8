@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --config nodemon.json & browser-sync start --proxy 'localhost:3000' --port 4000 --files 'public/**/*, app/data/*.json, app/bin/www' --no-open",
-    "dev": "nodemon --config nodemon.json"
+    "start": "sequelize-cli db:migrate --config app/config/config.json && sequelize-cli db:seed:all --config app/config/config.json && nodemon --config nodemon.json & browser-sync start --proxy 'localhost:3000' --port 4000 --files 'public/**/*, app/data/*.json, app/bin/www' --no-open",
+    "dev": "sequelize-cli db:migrate --config app/config/config.json && sequelize-cli db:seed:all -config app/config/config.json && nodemon --config nodemon.json"
   },
   "dependencies": {
     "body-parser": "^1.20.2",

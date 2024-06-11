@@ -2,6 +2,7 @@ extends layout
 
 block content
    h1 New Book
+   // display the errors if errors were caught in the post handler
    if errors
     h2.error Oooops!
     ul.error
@@ -19,7 +20,8 @@ block content
       input(name="genre" type="text" id="genre" value=(book ? book.genre : ''))
     p
       label(for="year") Year
-      input(name="year" type="text" id="year" value=(book ? book.year : ''))
+      // changed the input to a number input and said the maxlength should be 4 unless we have books from 10000 B.C.
+      input(name="year" type="number" id="year" minlength=1 maxlength=4 value=(book ? book.year : ''))
     p
       input(type="submit" value="Create New Book")
     p

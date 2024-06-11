@@ -31,3 +31,10 @@
 
 - pretty much got everything wired up correctly
 - need to add comments and move on to extra credit
+
+## June 11, 2024
+- Got the app wired up including extra credit.
+- Spent a while figuring out how to make the database be created and populated if it doesn't already exist.
+- Leared about setting up a seeders folder with the intitial data. 
+- Moved all of the initial books into a json file.
+
