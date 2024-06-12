@@ -38,3 +38,9 @@
 - Leared about setting up a seeders folder with the intitial data. 
 - Moved all of the initial books into a json file.
 
+## June 12, 2024
+- Received feedback from TH. 
+- Apparently I'm missing Sequelize Models and properties, I thought I had it set up but I'll review.
+- I guess I just had too much validation on the Book model. Only the title and author required validation.
+- Also, I had the required statement in the pug template which was stopping the form from submitting and hitting the error handling endpoints.
+- Resubmitting.

@@ -33,20 +33,20 @@ module.exports = (sequelize, DataTypes) => {
         // genre type has to be a string
         type: DataTypes.STRING,
         // genre can't be null or empty
-        allowNull: false,
+        allowNull: true,
         // validation error to the user that genre is required
-        validate: { notEmpty: { msg: 'Genre is required' } }
+        // validate: { notEmpty: { msg: 'Genre is required' } }
       },
       year: {
         // year has to be an integer
         type: DataTypes.INTEGER,
         // year can't be null or empty
-        allowNull: false,
+        allowNull: true,
         // validation messages to the user that year is required and must be a number
-        validate: {
-          notEmpty: { msg: 'Year is required' },
-          isInt: { msg: 'year must be a number' }
-        }
+        // validate: {
+        //   notEmpty: { msg: 'Year is required' },
+        //   isInt: { msg: 'year must be a number' }
+        // }
       }
     },
     {

@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { sequelize, Book } = require('../models'); // Import Sequelize instance
+const { Book } = require('../models'); // Import Sequelize instance
 module.exports = {
     // up function inserts data into the database
     up: async (queryInterface, Sequelize) => {
