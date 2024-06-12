@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       genre: {
         // genre type has to be a string
         type: DataTypes.STRING,
-        // genre can't be null or empty
+        // genre can be null or empty
         allowNull: true,
         // validation error to the user that genre is required
         // validate: { notEmpty: { msg: 'Genre is required' } }
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       year: {
         // year has to be an integer
         type: DataTypes.INTEGER,
-        // year can't be null or empty
+        // year can be null or empty
         allowNull: true,
         // validation messages to the user that year is required and must be a number
         // validate: {
