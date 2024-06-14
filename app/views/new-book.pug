@@ -11,17 +11,17 @@ block content
    form(action="/books/new" method="post")
     p
       label(for="title") Title
-      input(name="title" type="text" id="title" value=(book ? book.title : '') required)
+      input(name="title" type="text" id="title" value=(book ? book.title : ''))
     p
       label(for="author") Author
-      input(name="author" type="text" id="author" value=(book ? book.genre : '') required)
+      input(name="author" type="text" id="author" value=(book ? book.genre : ''))
     p
       label(for="genre") Genre
-      input(name="genre" type="text" id="genre" value=(book ? book.genre : '') required)
+      input(name="genre" type="text" id="genre" value=(book ? book.genre : ''))
     p
       label(for="year") Year
       // changed the input to a number input and said the maxlength should be 4 unless we have books from 10000 B.C.
-      input(name="year" type="number" id="year" minlength=1 maxlength=4 value=(book ? book.year : '') required)
+      input(name="year" type="number" id="year" minlength=1 maxlength=4 value=(book ? book.year : ''))
     p
       input(type="submit" value="Create New Book")
     p
